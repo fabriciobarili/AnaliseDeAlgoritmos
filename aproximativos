@@ -1,0 +1,38 @@
+def cobertura_estacoes(abrangencia, estacoes):
+    # Converter a abrangência para um conjunto
+    estados_necessarios = set(abrangencia)
+    estacoes_selecionadas = []
+    
+    while estados_necessarios:
+        melhor_estacao = None
+        estados_cobertos = set()
+        
+        # Encontrar a estação que cobre o maior número de estados necessários
+        for nome, estados in estacoes.items():
+            cobertura = estados_necessarios & estados
+            if len(cobertura) > len(estados_cobertos):
+                melhor_estacao = nome
+                estados_cobertos = cobertura
+        
+        if melhor_estacao is None:
+            break  # Não há mais estações que cubram os estados restantes
+            
+        # Adicionar a estação selecionada e remover os estados cobertos
+        estacoes_selecionadas.append(melhor_estacao)
+        estados_necessarios -= estados_cobertos
+    
+    return estacoes_selecionadas
+
+# Definindo os dados do problema
+abrangencia = ['RS', 'SC', 'PR', 'SP', 'MG', 'MT', 'ES', 'RJ']
+
+estacoes = {
+    'Estacao1': {'RS', 'SC'},
+    'Estacao2': {'SC', 'PR', 'SP'},
+    'Estacao3': {'MG', 'PR', 'MT'},
+    'Estacao4': {'MG', 'ES', 'SP', 'RJ'}
+}
+
+# Executando o algoritmo
+solucao = cobertura_estacoes(abrangencia, estacoes)
+print("Estações selecionadas para máxima cobertura:", solucao)
